@@ -2,7 +2,6 @@
 
 ![npm](https://img.shields.io/npm/v/@bonniernews/json-autocomplete)
 ![License](https://img.shields.io/npm/l/@bonniernews/json-autocomplete)
-![Build](https://github.com/BonnierNews/json-autocomplete/actions/workflows/build.yml/badge.svg)
 ![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
 
 A utility to incrementally build and complete JSON strings from potentially incomplete JSON append operations with caching capabilities.
