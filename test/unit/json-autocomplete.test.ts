@@ -26,9 +26,15 @@ describe("createJsonAutocomplete", () => {
     { input: '{"a": {"b": {"c": [1, 2, {"d": "text"', expected: '{"a": {"b": {"c": [1, 2, {"d": "text"}]}}}' },
     { input: '{\n  "name": "John",\n  "age": 30', expected: '{\n  "name": "John",\n  "age": 30}' },
     { input: '[1, "two", true, null, {"five": 5', expected: '[1, "two", true, null, {"five": 5}]' },
-    { input: '{"incompleteEscape": "This is a backslash \\', expected: '{"incompleteEscape": "This is a backslash \\"}' },
+    {
+      input: '{"incompleteEscape": "This is a backslash \\',
+      expected: '{"incompleteEscape": "This is a backslash \\"}',
+    },
     { input: '{"key\\"name": "value', expected: '{"key\\"name": "value"}' },
-    { input: '[{"id": 1, "name": "Item1"}, {"id": 2, "name": "Item2"', expected: '[{"id": 1, "name": "Item1"}, {"id": 2, "name": "Item2"}]' },
+    {
+      input: '[{"id": 1, "name": "Item1"}, {"id": 2, "name": "Item2"',
+      expected: '[{"id": 1, "name": "Item1"}, {"id": 2, "name": "Item2"}]',
+    },
     { input: '{"emptyArray": [', expected: '{"emptyArray": []}' },
     { input: '{"emptyObject": {', expected: '{"emptyObject": {}}' },
   ];
@@ -41,7 +47,6 @@ describe("createJsonAutocomplete", () => {
   });
 
   testCases.forEach(({ input, expected }) => {
-
     it(`should incrementally complete "${input}" to "${expected}" using append`, () => {
       const autoCompleter = createJsonAutocomplete();
       const splitPoint = Math.floor(input.length / 2);

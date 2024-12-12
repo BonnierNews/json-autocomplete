@@ -106,7 +106,7 @@ const jsonPart2 = ', "specs": {"cpu": "Intel i7", "ram": "16GB"';
 const completedJson2 = autocompleter.append(jsonPart2);
 console.log(completedJson2); // {"product": "Laptop", "price": 1200, "specs": {"cpu": "Intel i7", "ram": "16GB"}}
 
-const jsonPart3 = '}}';
+const jsonPart3 = "}}";
 const completedJson3 = autocompleter.append(jsonPart3);
 console.log(completedJson3); // {"product": "Laptop", "price": 1200, "specs": {"cpu": "Intel i7", "ram": "16GB"}}
 ```
@@ -135,7 +135,7 @@ console.log(completedJson); // {"title": "Book"}
 completedJson = jsonAutocomplete(', "author": "Jane Doe"');
 console.log(completedJson); // {"title": "Book", "author": "Jane Doe"}
 
-completedJson = jsonAutocomplete('}');
+completedJson = jsonAutocomplete("}");
 console.log(completedJson); // {"title": "Book", "author": "Jane Doe"}
 ```
 
