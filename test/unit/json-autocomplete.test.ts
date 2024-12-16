@@ -14,6 +14,9 @@ describe("createJsonAutocomplete", () => {
     { input: "[1, 2, 3", expected: "[1, 2, 3]" },
     { input: '{"key": "value', expected: '{"key": "value"}' },
     { input: '{"key": ', expected: '{"key": null}' },
+    { input: '{"key"', expected: '{"key":null}' },
+    { input: '{"ke', expected: '{"ke":null}' },
+    { input: '{"key": "hello", "test":', expected: '{"key": "hello", "test":null}' },
     { input: '{"a": {"b": [1, 2', expected: '{"a": {"b": [1, 2]}}' },
     { input: '{"text": "He said, \\"Hello\\nWorld', expected: '{"text": "He said, \\"Hello\\nWorld"}' },
     { input: '{"a": [1, 2, {"b": ', expected: '{"a": [1, 2, {"b": null}]}' },
@@ -40,14 +43,14 @@ describe("createJsonAutocomplete", () => {
   ];
 
   testCases.forEach(({ input, expected }) => {
-    it(`should autocomplete "${input}" to "${expected}" with single append`, () => {
+    it(`should autocomplete '${input}' to '${expected}' with single append`, () => {
       const result = jsonAutocomplete(input);
       expect(result).to.equal(expected);
     });
   });
 
   testCases.forEach(({ input, expected }) => {
-    it(`should incrementally complete "${input}" to "${expected}" using append`, () => {
+    it(`should incrementally complete '${input}' to '${expected}' using append`, () => {
       const autoCompleter = createJsonAutocomplete();
       const splitPoint = Math.floor(input.length / 2);
       const firstPart = input.slice(0, splitPoint);
