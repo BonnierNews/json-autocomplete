@@ -88,13 +88,22 @@ export function createJsonAutocomplete() {
         if (temporaryStack[temporaryStack.length - 1] !== '"') {
           const previousChar = getPreviousChar(autocompletedJson, autocompletedJson.length);
           if (previousChar === '"') {
-            autocompletedJson += ":null";
-          } else {
-            autocompletedJson += "null";
+            const lastCommaIndex = autocompletedJson.lastIndexOf(",");
+            const lastBraceIndex = autocompletedJson.lastIndexOf("{");
+            if (lastCommaIndex > lastBraceIndex) {
+              autocompletedJson = autocompletedJson.substring(0, lastCommaIndex);
+            } else {
+              autocompletedJson = autocompletedJson.substring(0, lastBraceIndex + 1);
+            }
           }
         } else {
-
-          autocompletedJson += '":null';
+          const lastCommaIndex = autocompletedJson.lastIndexOf(",");
+          const lastBraceIndex = autocompletedJson.lastIndexOf("{");
+          if (lastCommaIndex > lastBraceIndex) {
+            autocompletedJson = autocompletedJson.substring(0, lastCommaIndex);
+          } else {
+            autocompletedJson = autocompletedJson.substring(0, lastBraceIndex + 1);
+          }
           temporaryStack.pop();
         }
       }
@@ -105,7 +114,13 @@ export function createJsonAutocomplete() {
       }
 
       if (temporaryStack[temporaryStack.length - 1] === "}" && getPreviousChar(autocompletedJson, autocompletedJson.length) === ":") {
-        autocompletedJson += "null";
+        const lastCommaIndex = autocompletedJson.lastIndexOf(",");
+        const lastBraceIndex = autocompletedJson.lastIndexOf("{");
+        if (lastCommaIndex > lastBraceIndex) {
+          autocompletedJson = autocompletedJson.substring(0, lastCommaIndex);
+        } else {
+          autocompletedJson = autocompletedJson.substring(0, lastBraceIndex + 1);
+        }
       }
 
       const reversedStack = temporaryStack.reverse();
