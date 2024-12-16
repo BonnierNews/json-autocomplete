@@ -1,11 +1,22 @@
 function getPreviousChar(str: string, from: number): string | null {
+  const whitespace = " \t\n\r";
   for (let i = from - 1; i >= 0; i--) {
-    if (str[i] !== " " && str[i] !== "\t" && str[i] !== "\n" && str[i] !== "\r") {
-      return str[i];
+    const char = str[i];
+    if (!whitespace.includes(char)) {
+      return char;
     }
   }
   return null;
 }
+
+// Helper function to trim autocompletedJson
+const trimJson = (autocompletedJson: string) => {
+  const lastComma = autocompletedJson.lastIndexOf(",");
+  const lastBrace = autocompletedJson.lastIndexOf("{");
+  return lastComma > lastBrace
+    ? autocompletedJson.substring(0, lastComma)
+    : autocompletedJson.substring(0, lastBrace + 1);
+};
 
 /**
  * Utility to incrementally build a complete JSON string
@@ -17,6 +28,7 @@ export function createJsonAutocomplete() {
   const stack: string[] = [];
   let inString = false;
   let inProperty = false;
+
   return {
     /**
      * Appends a part of the JSON to the internal structure
@@ -27,10 +39,11 @@ export function createJsonAutocomplete() {
      */
     append(part: string): string {
       const tempAccumulated = accumulated + part;
-      for (let i = accumulated.length; i < tempAccumulated.length; i++) {
 
+      for (let i = accumulated.length; i < tempAccumulated.length; i++) {
         const currentChar = tempAccumulated[i];
         accumulated += currentChar;
+
         if (getPreviousChar(tempAccumulated, i) === "\\") {
           continue;
         }
@@ -38,15 +51,12 @@ export function createJsonAutocomplete() {
         if (currentChar === '"') {
           if (stack[stack.length - 1] === '"') {
             stack.pop();
+            inString = false;
           } else {
             stack.push('"');
-            const previousChar = getPreviousChar(tempAccumulated, i);
-            if (previousChar === "," || previousChar === "{") {
-              inProperty = true;
-              inString = false;
-            } else {
-              inString = true;
-            }
+            const prevChar = getPreviousChar(tempAccumulated, i);
+            inProperty = prevChar === "," || prevChar === "{";
+            inString = !inProperty;
           }
           continue;
         }
@@ -56,28 +66,22 @@ export function createJsonAutocomplete() {
         }
 
         switch (currentChar) {
-          case "{": {
+          case "{":
             stack.push("}");
             break;
-          }
-          case "[": {
+          case "[":
             stack.push("]");
             break;
-          }
-          case "}": {
-            if (stack[stack.length - 1] !== "}") throw new Error("Unbalanced brackets");
-            stack.pop();
+          case "}":
+          case "]":
+            if (currentChar !== stack.pop()) {
+              throw new Error("Unbalanced brackets");
+            }
             break;
-          }
-          case "]": {
-            if (stack[stack.length - 1] !== "]") throw new Error("Unbalanced brackets");
-            stack.pop();
-            break;
-          }
-          case ":": {
+          case ":":
             inProperty = false;
             inString = false;
-          }
+            break;
         }
       }
 
@@ -88,22 +92,10 @@ export function createJsonAutocomplete() {
         if (temporaryStack[temporaryStack.length - 1] !== '"') {
           const previousChar = getPreviousChar(autocompletedJson, autocompletedJson.length);
           if (previousChar === '"') {
-            const lastCommaIndex = autocompletedJson.lastIndexOf(",");
-            const lastBraceIndex = autocompletedJson.lastIndexOf("{");
-            if (lastCommaIndex > lastBraceIndex) {
-              autocompletedJson = autocompletedJson.substring(0, lastCommaIndex);
-            } else {
-              autocompletedJson = autocompletedJson.substring(0, lastBraceIndex + 1);
-            }
+            autocompletedJson = trimJson(autocompletedJson);
           }
         } else {
-          const lastCommaIndex = autocompletedJson.lastIndexOf(",");
-          const lastBraceIndex = autocompletedJson.lastIndexOf("{");
-          if (lastCommaIndex > lastBraceIndex) {
-            autocompletedJson = autocompletedJson.substring(0, lastCommaIndex);
-          } else {
-            autocompletedJson = autocompletedJson.substring(0, lastBraceIndex + 1);
-          }
+          autocompletedJson = trimJson(autocompletedJson);
           temporaryStack.pop();
         }
       }
@@ -113,23 +105,14 @@ export function createJsonAutocomplete() {
         autocompletedJson = autocompletedJson.substring(0, autocompletedJson.lastIndexOf(","));
       }
 
-      if (temporaryStack[temporaryStack.length - 1] === "}" && getPreviousChar(autocompletedJson, autocompletedJson.length) === ":") {
-        const lastCommaIndex = autocompletedJson.lastIndexOf(",");
-        const lastBraceIndex = autocompletedJson.lastIndexOf("{");
-        if (lastCommaIndex > lastBraceIndex) {
-          autocompletedJson = autocompletedJson.substring(0, lastCommaIndex);
-        } else {
-          autocompletedJson = autocompletedJson.substring(0, lastBraceIndex + 1);
-        }
+      if (
+        temporaryStack[temporaryStack.length - 1] === "}" &&
+        getPreviousChar(autocompletedJson, autocompletedJson.length) === ":"
+      ) {
+        autocompletedJson = trimJson(autocompletedJson);
       }
 
-      const reversedStack = temporaryStack.reverse();
-
-      for (const bracket of reversedStack) {
-        autocompletedJson += bracket;
-      }
-
-      return autocompletedJson;
+      return autocompletedJson + temporaryStack.reverse().join("");
     },
   };
 }
