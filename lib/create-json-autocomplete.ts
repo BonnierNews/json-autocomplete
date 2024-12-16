@@ -38,6 +38,7 @@ export function createJsonAutocomplete() {
         if (currentChar === '"') {
           if (stack[stack.length - 1] === '"') {
             stack.pop();
+            inString = false;
           } else {
             stack.push('"');
             const previousChar = getPreviousChar(tempAccumulated, i);
