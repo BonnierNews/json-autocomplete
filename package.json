@@ -1,6 +1,6 @@
 {
   "name": "@bonniernews/json-autocomplete",
-  "version": "0.0.10",
+  "version": "0.0.12",
   "description": "Completes incomplete JSON string with caching capabilites",
   "type": "module",
   "main": "./dist/index.cjs",
