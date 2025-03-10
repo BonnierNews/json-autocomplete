@@ -203,6 +203,3 @@ This project is licensed under the [MIT License](./LICENSE). You are free to use
 
 If you encounter any issues or have questions, please open an [issue](https://github.com/BonnierNews/json-autocomplete/issues) on GitHub.
 
----
-
-> **Note:** This README assumes that the repository is hosted at `https://github.com/BonnierNews/json-autocomplete`. Please update the links accordingly if the repository is located elsewhere.
