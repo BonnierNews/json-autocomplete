@@ -4,7 +4,7 @@
 ![License](https://img.shields.io/npm/l/@bonniernews/json-autocomplete)
 ![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
 
-A utility to incrementally build and complete JSON strings from potentially incomplete JSON append operations with caching capabilities.
+A utility to incrementally build and complete JSON strings from potentially incomplete JSON append operations with caching capabilities. Perfect for modern LLM applications that should stream json output. Perfectly combined with chat completions API from OpenAI.
 
 ## Table of Contents
 
