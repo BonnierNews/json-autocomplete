@@ -58,5 +58,30 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "keywords": [
+    "JSON",
+    "autocomplete",
+    "JSON parser",
+    "incremental JSON",
+    "JSON builder",
+    "JSON editor",
+    "JSON validator",
+    "JSON string",
+    "caching",
+    "Node.js",
+    "TypeScript",
+    "error handling",
+    "partial JSON",
+    "JSON fragments",
+    "JSON completion",
+    "data processing",
+    "developer tool",
+    "utility library",
+    "Bonnier News",
+    "LLM",
+    "Structured Output",
+    "Streaming",
+    "JSON streaming"
+  ]
 }
