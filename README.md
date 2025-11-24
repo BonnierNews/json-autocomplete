@@ -202,4 +202,3 @@ This project is licensed under the [MIT License](./LICENSE). You are free to use
 ## Support
 
 If you encounter any issues or have questions, please open an [issue](https://github.com/BonnierNews/json-autocomplete/issues) on GitHub.
-

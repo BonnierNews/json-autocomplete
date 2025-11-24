@@ -30,7 +30,8 @@
   "scripts": {
     "build": "tsup",
     "lint": "eslint . --cache && npm run typecheck",
-    "format": "prettier --write . && eslint --fix .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write . && npm run lint:fix",
     "typecheck": "tsc --noEmit",
     "test": "mocha --exit --reporter ${REPORTER:-spec}",
     "coverage": "c8 npm test && c8 check-coverage",
